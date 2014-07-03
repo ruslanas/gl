@@ -1,0 +1,10 @@
+CC=g++
+LIBFLAGS=-L C:\\MinGW\\lib -lopengl32 -lglu32 -lglew32 -lfreeglut
+FLAGS=-I C:\\MinGW\\include
+
+all:
+	$(CC) -o lab -g -v -Wall main.cpp util.cpp $(FLAGS) $(LIBFLAGS)
+
+clean:
+	rm -rf *.o lab
+
