@@ -1,16 +1,11 @@
-#include <iostream>
-#include <cstdio>
-#include <cstdlib>
-#include <GL/glew.h>
-
 #include "util.h"
 
 void prepareShaders() {
     
     GLuint vShader, fShader;
 
-    vShader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
-    fShader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
+    vShader = glCreateShader(GL_VERTEX_SHADER);
+    fShader = glCreateShader(GL_FRAGMENT_SHADER);
 
     size_t size;
 
@@ -20,10 +15,10 @@ void prepareShaders() {
     size = loadSource((char *) "glsl/vertex.glsl", &vShaderSource);
 
     std::cout << "Vertex shader size: " << size << std::endl;
-    glShaderSourceARB(vShader, 1, (const GLcharARB**) &vShaderSource, NULL);
+    glShaderSource(vShader, 1, (const GLcharARB**) &vShaderSource, NULL);
 
     // Compile
-    glCompileShaderARB(vShader);
+    glCompileShader(vShader);
 
     int compiled = 0, length = 0, laux = 0;
     glGetObjectParameterivARB(vShader, GL_COMPILE_STATUS, &compiled);
@@ -73,7 +68,7 @@ void prepareShaders() {
     glGetInfoLogARB(vShader, length, &laux, logString);
     std::cout << "Link status log: " << logString << std::endl;
 
-    glUseProgramObjectARB(program);
+    glUseProgram(program);
 
 }
 

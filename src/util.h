@@ -8,6 +8,11 @@
 #ifndef UTIL_H
 #define	UTIL_H
 
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <GL/glew.h>
+
 int loadSource(char *, GLcharARB **);
 void prepareShaders();
 

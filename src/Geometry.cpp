@@ -10,9 +10,6 @@
 Geometry::Geometry() {
 }
 
-Geometry::Geometry(const Geometry& orig) {
-}
-
 Geometry::~Geometry() {
 }
 

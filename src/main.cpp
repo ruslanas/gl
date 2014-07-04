@@ -12,35 +12,56 @@
 #include "util.h"
 #include "Geometry.h"
 
-void display() {
-    glClearColor(0, 0, 1, 0);
-    glClear(GL_COLOR_BUFFER_BIT);
+#define BUFFER_OFFSET(offset) ((void *)(offset))
 
-    Geometry geom = Geometry();
-    geom.create();
+enum VAO_IDs {Triangles, NumVAOs};
+enum Buffer_IDs {ArrayBuffer, NumBuffers};
+enum Attrib_IDs {vPosition = 0};
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(90, 1, 0.01, 1000);
-    gluLookAt(-10000, 10, 10, 0, 0, 0, 0, 1, 0);
+GLuint VAOs[NumVAOs]; // Vertex array objects
+GLuint Buffers[NumBuffers];
 
-    glEnable(GL_LIGHTING);
-    glEnable(GL_COLOR_MATERIAL);
+const GLuint NumVertices = 6;
 
-    float color4f[4] = {2.0, 2.0, 2.0};
-    glLightfv(GL_LIGHT0, GL_POSITION, color4f);
+void init(void) {
+    
+    // allocate vertex array object names
+    glGenVertexArrays(NumVAOs, VAOs);
 
-    glColor3f(1, 1, 1);
-    glLoadIdentity();
-
-    glPushMatrix();
-    glScalef(0.5, 0.5, 0.5);
-    glCallList(1);
-    glPopMatrix();
-
-    glFlush();
+    // activate previously created vertex-array
+    glBindVertexArray(VAOs[Triangles]);
+    
+    GLfloat vertices[NumVertices][2] = {
+        {-0.90, -0.90},
+        {0.85, -0.90},
+        {-0.90, 0.85},
+        {0.90, -0.85},
+        {0.90, 0.90},
+        {-0.85, 0.90}
+    };
+    
+    glGenBuffers(NumBuffers, Buffers);
+    glBindBuffer(GL_ARRAY_BUFFER, Buffers[ArrayBuffer]);
+    
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    
+    prepareShaders();
+    glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+    glEnableVertexAttribArray(vPosition);
 }
 
+void display() {
+    glClearColor(0, 0, 1, 1);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // select array for use as vertex data
+    glBindVertexArray(VAOs[Triangles]);
+    
+    // send vertex data to OpenGL pipeline
+    glDrawArrays(GL_TRIANGLES, 0, NumVertices);
+    
+    glFlush();
+}
 int main(int argc, char**argv) {
 
     glutInit(&argc, argv);
@@ -63,13 +84,11 @@ int main(int argc, char**argv) {
         exit(1);
     }
 
-    // Load shader source from file
-
-
     std::cout << glGetString(GL_VERSION) << std::endl;
 
+    init();
+    
     glutDisplayFunc(display);
-    prepareShaders();
     glutMainLoop();
 
     return 0;
