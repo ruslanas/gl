@@ -1,6 +1,6 @@
 CC=g++
-LIBFLAGS=-L C:\\MinGW\\lib -lopengl32 -lglu32 -lglew32s -lfreeglut
-FLAGS=-I C:\\MinGW\\include
+LIBFLAGS=-L C:\\MinGW\\lib -lopengl32 -lglu32 -lglew32 -lfreeglut
+FLAGS=-I C:\\MinGW\\include -static-libgcc -static-libstdc++
 
 all:
 	g++  main.cpp util.cpp -g -Wall -o lab -lglut -lGL -lGLU -lGLEW
