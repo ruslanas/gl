@@ -10,14 +10,14 @@
 #include <GL/glut.h>
 
 #include "util.h"
-
-void addGeometry();
+#include "Geometry.h"
 
 void display() {
     glClearColor(0, 0, 1, 0);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    addGeometry();
+    Geometry geom = Geometry();
+    geom.create();
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -39,21 +39,6 @@ void display() {
     glPopMatrix();
 
     glFlush();
-}
-
-void addGeometry() {
-    glNewList(1, GL_COMPILE);
-    glBegin(GL_TRIANGLES);
-
-    glColor3f(0, 1, 0);
-
-    // create three triangles
-    for (int i = 0; i < 9; i++) {
-        glVertex3f(rand() % 10 / 5.0, rand() % 3 / 5.0, rand() % 3 / 5.0);
-    }
-
-    glEnd();
-    glEndList();
 }
 
 int main(int argc, char**argv) {
