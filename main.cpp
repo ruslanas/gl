@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cstdio>
 
+#define GLEW_STATIC
 #include <GL/glew.h>
 #include <GL/glut.h>
 
@@ -44,7 +45,7 @@ void addGeometry() {
     glNewList(1, GL_COMPILE);
     glBegin(GL_TRIANGLES);
 
-    //glColor3f(0, 1, 0);
+    glColor3f(0, 1, 0);
 
     // create three triangles
     for (int i = 0; i < 9; i++) {
