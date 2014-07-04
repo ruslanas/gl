@@ -1,3 +1,4 @@
+#version 420 core
 varying vec3 vNormal;
 
 void main(void){
