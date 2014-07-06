@@ -62,6 +62,7 @@ Matrix4& Matrix4::operator+=(const Matrix4& rhs) {
             this->mat[i][j] += rhs(i, j);
         }
     }
+    return *this;
 }
 
 Matrix4& Matrix4::operator=(const Matrix4& rhs) {
