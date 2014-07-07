@@ -11,7 +11,13 @@
 #include <cstring>
 
 Matrix4::Matrix4() {
+    // zeros
     init(0.0);
+    // identity matrix
+    this->mat[0][0] = 1;
+    this->mat[1][1] = 1;
+    this->mat[2][2] = 1;
+    this->mat[3][3] = 1;
 }
 Matrix4::Matrix4(double _initial) {
     init(_initial);
