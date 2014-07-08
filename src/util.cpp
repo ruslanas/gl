@@ -1,6 +1,6 @@
 #include "util.h"
 
-void prepareShaders() {
+GLhandleARB prepareShaders() {
     
     GLuint vShader, fShader;
 
@@ -15,7 +15,7 @@ void prepareShaders() {
     size = loadSource((char *) "glsl/vertex.glsl", &vShaderSource);
 
     std::cout << "Vertex shader size: " << size << std::endl;
-    glShaderSource(vShader, 1, (const GLcharARB**) &vShaderSource, NULL);
+    glShaderSource(vShader, 1, (const GLcharARB**) &vShaderSource, (GLint *)&size);
 
     // Compile
     glCompileShader(vShader);
@@ -32,15 +32,15 @@ void prepareShaders() {
         char *logString = (GLchar *) malloc(length * sizeof (GLcharARB));
         glGetInfoLogARB(vShader, length, &laux, logString);
         std::cout << "Log file length: " << length << std::endl;
-        std::cout << "LOG: " << logString << std::endl;
+        std::cout << logString << std::endl;
     }
 
     size = loadSource((char *) "glsl/fragment.glsl", &fShaderSource);
     std::cout << "Fragment shader size: " << size << std::endl;
 
-    glShaderSourceARB(fShader, 1, (const GLcharARB**) &fShaderSource, NULL);
+    glShaderSourceARB(fShader, 1, (const GLcharARB**) &fShaderSource, (GLint *)&size);
     glCompileShaderARB(fShader);
-
+    length = 0;
     glGetObjectParameterivARB(fShader, GL_COMPILE_STATUS, &compiled);
     glGetObjectParameterivARB(fShader, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
 
@@ -54,22 +54,23 @@ void prepareShaders() {
         std::cout << "LOG: " << logString << std::endl;
     }
 
-    GLhandleARB program = glCreateProgramObjectARB();
-    glAttachObjectARB(program, vShader);
-    glAttachObjectARB(program, fShader);
-
-    glLinkProgramARB(program);
+    GLuint program = glCreateProgram();
     
+    glAttachShader(program, vShader);
+    glAttachShader(program, fShader);
+
+    glLinkProgram(program);
     
     glGetObjectParameterivARB(program, GL_OBJECT_LINK_STATUS_ARB, &compiled);
     glGetObjectParameterivARB(program, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
     
-    char *logString = (GLchar *) malloc(length * sizeof (GLcharARB));
+    GLchar *logString = (GLchar *) malloc(length * sizeof (GLchar));
     glGetInfoLogARB(vShader, length, &laux, logString);
     std::cout << "Link status log: " << logString << std::endl;
 
     glUseProgram(program);
 
+    return program;
 }
 
 int loadSource(char *filename, GLcharARB ** shaderSource) {

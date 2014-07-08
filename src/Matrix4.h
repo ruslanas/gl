@@ -7,6 +7,7 @@
 
 #ifndef MATRIX4_H
 #define	MATRIX4_H
+#include <math.h>
 
 class Matrix4 {
 public:
@@ -16,6 +17,7 @@ public:
     virtual ~Matrix4();
     
     void init(double _initial);
+    void makeRotationY(double angle);
     
     Matrix4 operator*(const Matrix4& rhs);
     

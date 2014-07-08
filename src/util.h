@@ -14,7 +14,7 @@
 #include <GL/glew.h>
 
 int loadSource(char *, GLcharARB **);
-void prepareShaders();
+GLhandleARB prepareShaders();
 
 #endif	/* UTIL_H */
 

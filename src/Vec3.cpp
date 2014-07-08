@@ -26,18 +26,20 @@ Vec3 Vec3::applyMatrix(const Matrix4& mat) {
 
     double vec[] = {x, y, z, 1.0};
     double out[] = {0, 0, 0, 0};
-
-    for(int i=0;i<4;i++) {
-        for(int j=0;j<4;j++) {
+    
+    // multiply matrices
+    for (unsigned i = 0; i < 4; i++) {
+        for (unsigned j = 0; j < 4; j++) {
             out[i] += mat(i, j) * vec[j];
         }
     }
-    
-    out[0] /= out[3];
-    out[1] /= out[3];
-    out[2] /= out[3];
-    out[3] /= out[3];
-    
+
+    double w = out[3];
+    // divide by w. Drop 4th component.
+    out[0] /= w;
+    out[1] /= w;
+    out[2] /= w;
+
     return Vec3(out[0], out[1], out[2]);
 }
 

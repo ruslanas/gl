@@ -9,45 +9,69 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 
+#include "Vec3.h"
+#include "UniformBlock.h"
 #include "util.h"
-#include "Geometry.h"
 
 #define BUFFER_OFFSET(offset) ((void *)(offset))
 
-enum VAO_IDs {Triangles, NumVAOs};
-enum Buffer_IDs {ArrayBuffer, NumBuffers};
-enum Attrib_IDs {vPosition = 0};
+enum VAO_IDs {
+    Triangles, NumVAOs
+};
+
+enum Buffer_IDs {
+    ArrayBuffer, NumBuffers
+};
+
+enum Attrib_IDs {
+    vPosition = 0
+};
 
 GLuint VAOs[NumVAOs]; // Vertex array objects
 GLuint Buffers[NumBuffers];
 
-const GLuint NumVertices = 6;
+const GLuint NumVertices = 3;
 
 void init(void) {
-    
+
     // allocate vertex array object names
     glGenVertexArrays(NumVAOs, VAOs);
 
     // activate previously created vertex-array
     glBindVertexArray(VAOs[Triangles]);
-    
-    GLfloat vertices[NumVertices][2] = {
-        {-0.90, -0.90},
-        {0.85, -0.90},
-        {-0.90, 0.85},
-        {0.90, -0.85},
-        {0.90, 0.90},
-        {-0.85, 0.90}
+
+    Vec3 vecArray[] = {
+        Vec3(-0.9, -0.9, 0),
+        Vec3(0.85, -0.9, 0),
+        Vec3(-0.9, 0.85, 0)
     };
-    
+
+    Matrix4 mat = Matrix4();
+
+    mat.makeRotationY(-60 * M_PI / 180);
+
+    GLfloat vertices[NumVertices][3];
+
+    for (unsigned i = 0; i < NumVertices; i++) {
+        Vec3 vec = vecArray[i].applyMatrix(mat);
+        vertices[i][0] = (GLfloat) vec.x;
+        vertices[i][1] = (GLfloat) vec.y;
+        vertices[i][2] = (GLfloat) vec.z;
+    }
+
     glGenBuffers(NumBuffers, Buffers);
     glBindBuffer(GL_ARRAY_BUFFER, Buffers[ArrayBuffer]);
-    
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    
-    prepareShaders();
+
+    // allocate OpenGL server memory for storing data
+    glBufferData(GL_ARRAY_BUFFER, sizeof (vertices), vertices, GL_STATIC_DRAW);
+
     glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
     glEnableVertexAttribArray(vPosition);
+    
+    GLuint program = prepareShaders();
+    
+    UniformBlock uBlock = UniformBlock(program, (char*)"UniformBlock");
+    uBlock.append(mat);
 }
 
 void display() {
@@ -56,12 +80,13 @@ void display() {
 
     // select array for use as vertex data
     glBindVertexArray(VAOs[Triangles]);
-    
+
     // send vertex data to OpenGL pipeline
     glDrawArrays(GL_TRIANGLES, 0, NumVertices);
-    
+
     glFlush();
 }
+
 int main(int argc, char**argv) {
 
     glutInit(&argc, argv);
@@ -87,7 +112,7 @@ int main(int argc, char**argv) {
     std::cout << glGetString(GL_VERSION) << std::endl;
 
     init();
-    
+
     glutDisplayFunc(display);
     glutMainLoop();
 
