@@ -18,6 +18,7 @@ public:
     
     void init(double _initial);
     void makeRotationY(double angle);
+    void makeRotationZ(double angle);
     
     Matrix4 operator*(const Matrix4& rhs);
     

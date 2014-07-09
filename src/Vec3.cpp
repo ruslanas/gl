@@ -26,7 +26,7 @@ Vec3 Vec3::applyMatrix(const Matrix4& mat) {
 
     double vec[] = {x, y, z, 1.0};
     double out[] = {0, 0, 0, 0};
-    
+
     // multiply matrices
     for (unsigned i = 0; i < 4; i++) {
         for (unsigned j = 0; j < 4; j++) {
@@ -45,6 +45,16 @@ Vec3 Vec3::applyMatrix(const Matrix4& mat) {
 
 double Vec3::length() {
     return sqrt(x * x + y * y + z * z);
+}
+
+// cross product
+
+Vec3 Vec3::operator^(const Vec3& rhs) {
+    return Vec3(y * rhs.z - z * rhs.y, z * rhs.x - x * rhs.z, x * rhs.y - y * rhs.x);
+}
+
+Vec3 Vec3::operator-(const Vec3& rhs) {
+    return Vec3(x - rhs.x, y - rhs.y, z - rhs.z);
 }
 
 Vec3::operator const double*() {

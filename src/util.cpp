@@ -86,9 +86,10 @@ int loadSource(char *filename, GLcharARB ** shaderSource) {
     size = ftell(source);
     rewind(source);
     
-    GLcharARB * string;
+    GLchar * string;
+    
     // allocate memory
-    string = (GLcharARB *) malloc(size * sizeof (GLcharARB));
+    string = (GLchar *) malloc(size * sizeof (GLchar));
     
     if(string == 0) {
         printf("Error: Out of memory\n");

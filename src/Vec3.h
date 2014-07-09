@@ -28,7 +28,10 @@ public:
     Vec3 applyMatrix(const Matrix4& mat);
     // typecast operator
     operator const double*();
-
+    
+    // cross product
+    Vec3 operator^(const Vec3& rhs);
+    Vec3 operator-(const Vec3& rhs);
     double length();
 
 private:
