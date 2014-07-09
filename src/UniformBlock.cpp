@@ -16,7 +16,7 @@ UniformBlock::UniformBlock(GLuint _program, char* _name) : name(_name), program(
 }
 
 UniformBlock::UniformBlock(const UniformBlock& orig) {
-    
+    bindingPoint = orig.bindingPoint;
 }
 
 UniformBlock::~UniformBlock() {

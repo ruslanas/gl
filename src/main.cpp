@@ -47,11 +47,13 @@ void init(void) {
     glBindVertexArray(VAOs[Triangles]);
 
     Box box = Box(1.0, 1.0, 1.0);
-    scene.add(box);
     
+    box.print(); // just to test inheritance
+    
+    scene.add(box);
     scene.array = VAOs[Triangles];
     
-    size_t size = sizeof(GLfloat) * box.numVertices * 3;
+    size_t size = sizeof(GLfloat) * box.numVertices() * 3;
     GLfloat* vertices = (GLfloat*)malloc(size);
 
     box.loadVertices(vertices);
@@ -123,7 +125,7 @@ int main(int argc, char**argv) {
     }
 
     std::cout << "GLEW version: " << glewGetString(GLEW_VERSION) << std::endl;
-
+    
     if (!GLEW_ARB_shader_objects || !GLEW_ARB_fragment_shader
             || !GLEW_ARB_vertex_shader || !GLEW_ARB_shading_language_100) {
         std::cout << "Unsupported extensions" << std::endl;

@@ -16,14 +16,15 @@ Scene::Scene() {
 }
 
 Scene::Scene(const Scene& orig) {
+    numVertices = orig.numVertices;
 }
 
 Scene::~Scene() {
 }
 
 // of course it is a stub
-void Scene::add(const Box& box) {
-    numVertices += box.numVertices;
+void Scene::add(const Mesh& mesh) {
+    numVertices += mesh.numVertices();
 }
 
 void Scene::render() {

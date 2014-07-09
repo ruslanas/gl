@@ -17,7 +17,7 @@ public:
     virtual ~Scene();
     
     void render();
-    void add(const Box& box);
+    void add(const Mesh& mesh);
     // quick fix
     GLuint array;
     
