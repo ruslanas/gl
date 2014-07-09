@@ -29,7 +29,7 @@ GLhandleARB prepareShaders() {
     }
 
     if (length > 0) {
-        char *logString = (GLchar *) malloc(length * sizeof (GLcharARB));
+        char *logString = (GLchar *) malloc(length * sizeof (GLchar));
         glGetInfoLogARB(vShader, length, &laux, logString);
         std::cout << "Log file length: " << length << std::endl;
         std::cout << logString << std::endl;

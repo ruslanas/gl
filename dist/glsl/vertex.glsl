@@ -12,7 +12,7 @@ layout(std140) uniform UniformBlock {
     mat4 Model;
 };
 
-varying vec3 vNormal;
+varying vec4 vNormal;
 varying vec4 vPosition;
 
 void main(void){

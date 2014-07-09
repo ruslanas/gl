@@ -14,9 +14,6 @@ Box::Box(double _length, double _width, double _depth) {
     width = _width;
     length = _length;
     depth = _depth;
-    numVertices = NUM_VERTICES;
-    vertices = (Vec3*)malloc(sizeof(Vec3) * numVertices);
-    
     double hw = width / 2.0;
     Vec3 vrtc[NUM_VERTICES] = {
         Vec3(-hw, -hw, -hw),
@@ -43,6 +40,9 @@ Box::Box(double _length, double _width, double _depth) {
         Vec3(-hw, -hw, -hw),
         Vec3(-hw, -hw, hw),
     };
+    numVertices = NUM_VERTICES;
+    vertices = (Vec3*)malloc(sizeof(Vec3) * numVertices);
+    
     // copy to class member
     for(int i=0;i<numVertices;i++) {
         vertices[i] = vrtc[i];

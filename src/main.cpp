@@ -12,9 +12,12 @@
 #include "Vec3.h"
 #include "UniformBlock.h"
 #include "Box.h"
+#include "Scene.h"
 #include "util.h"
 
 #define BUFFER_OFFSET(offset) ((void *)(offset))
+
+Scene scene;
 
 enum VAO_IDs {
     Triangles, NumVAOs
@@ -35,6 +38,7 @@ GLuint Buffers[NumBuffers];
 const GLuint NumVertices = 18;
 
 void init(void) {
+    scene = Scene();
 
     // allocate vertex array object names
     glGenVertexArrays(NumVAOs, VAOs);
@@ -43,7 +47,10 @@ void init(void) {
     glBindVertexArray(VAOs[Triangles]);
 
     Box box = Box(1.0, 1.0, 1.0);
-
+    scene.add(box);
+    
+    scene.array = VAOs[Triangles];
+    
     size_t size = sizeof(GLfloat) * box.numVertices * 3;
     GLfloat* vertices = (GLfloat*)malloc(size);
 
@@ -98,17 +105,7 @@ void init(void) {
 }
 
 void display() {
-    glClearColor(0, 0, 1, 1);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    // select array for use as vertex data
-    glBindVertexArray(VAOs[Triangles]);
-
-    // send vertex data to OpenGL pipeline.
-    // take NumVertices, start from 0th element in vertex array
-    glDrawArrays(GL_TRIANGLES, 0, NumVertices);
-
-    glFlush();
+    scene.render();
 }
 
 int main(int argc, char**argv) {
@@ -136,7 +133,7 @@ int main(int argc, char**argv) {
     std::cout << glGetString(GL_VERSION) << std::endl;
 
     init();
-
+    
     glutDisplayFunc(display);
     glutMainLoop();
 

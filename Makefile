@@ -1,5 +1,6 @@
 MAIN = lab
-SRC = util.cpp main.cpp Geometry.cpp Vec3.cpp Matrix4.cpp UniformBlock.cpp Box.cpp
+SRC = util.cpp main.cpp Geometry.cpp Vec3.cpp Matrix4.cpp UniformBlock.cpp Box.cpp \
+Scene.cpp
 
 CC = g++
 D_BIN = dist
@@ -33,6 +34,8 @@ obj/UniformBlock.o: src/UniformBlock.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) -c src/UniformBlock.cpp -o obj/UniformBlock.o
 obj/Box.o: src/Box.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) -c src/Box.cpp -o obj/Box.o
+obj/Scene.o: src/Scene.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) -c src/Scene.cpp -o obj/Scene.o
 	
 all:
 	g++ main.cpp util.cpp -g -Wall -o lab -lglut -lGL -lGLU -lGLEW
