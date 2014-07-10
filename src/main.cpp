@@ -2,7 +2,6 @@
  * @author Ruslanas Balciunas <ruslanas.com@gmail.com>
  */
 
-#include <iostream>
 #include <cstdio>
 
 #define GLEW_STATIC
@@ -48,9 +47,25 @@ int main(int argc, char**argv) {
     fprintf(stdout, "GL version: %s\n", glGetString(GL_VERSION));
 
     Application app = Application();
+    
     app.init(scene);
     
+    Matrix4 mat = Matrix4(); // create identity matrix
+    mat.makeRotationY(-60 * M_PI / 180);
+    Matrix4 rotZ = Matrix4();
+    rotZ.makeRotationZ(-60 * M_PI / 180);
+    mat = mat * rotZ;
+
+    app.uBlock.append(mat);
+    
+    Box box = Box(0.5, 1.0, 2.0);
+    scene.add(box);
+    
+    // print some info to stdout
+    box.print();
+    
     glutDisplayFunc(display);
+
     app.loop();
     
     return 0;

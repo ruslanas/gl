@@ -53,3 +53,8 @@ Box::Box(const Box& orig) : Mesh() {
 
 Box::~Box() {
 }
+
+void Box::print() {
+    fprintf(stdout, "Number of vertices: %d\n", count);
+    fprintf(stdout, "l:%02f;w:%02f;d:%02f\n", length, width, depth);
+}

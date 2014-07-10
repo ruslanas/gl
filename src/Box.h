@@ -17,7 +17,8 @@ public:
     Box(double _length, double _width, double _depth);
     Box(const Box& orig);
     virtual ~Box();
-
+    void print();
+    
 private:
     double length, width, depth;
 };

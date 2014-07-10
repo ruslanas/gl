@@ -10,37 +10,6 @@
 #include "Scene.h"
 #include "UniformBlock.h"
 
-int loadSource(char *filename, GLcharARB ** shaderSource) {
-    size_t size;
-    FILE *source = fopen(filename, "rb");
-
-    if (source == NULL) {
-        fprintf(stderr, "GLSL file not found\n");
-        exit(1);
-    }
-
-    fseek(source, 0, SEEK_END);
-    size = ftell(source);
-    rewind(source);
-
-    GLchar * string;
-
-    // allocate memory
-    string = (GLchar *) malloc(size * sizeof (GLchar));
-
-    if (string == 0) {
-        fprintf(stderr, "Error: Out of memory\n");
-        exit(1);
-    }
-
-    fread(string, size, 1, source);
-    fclose(source);
-
-    *shaderSource = string;
-
-    return size;
-}
-
 Application::Application() {
 }
 
@@ -60,29 +29,17 @@ void Application::init(Scene& scene) {
 
     scene.array = arr;
 
-    Box box = Box(.5, .5, .5);
-    scene.add(box);
-
-    GLuint program = loadShaders();
-
-    Matrix4 mat = Matrix4(); // create identity matrix
-    mat.makeRotationY(-60 * M_PI / 180);
-
-    Matrix4 rotZ = Matrix4();
-    rotZ.makeRotationZ(-60 * M_PI / 180);
-
-    mat = mat * rotZ;
-
-    UniformBlock uBlock = UniformBlock(program, (char*) "UniformBlock");
-    uBlock.append(mat);
-
+    loadShaders();
+    
+    // shaders must be loaded and compiled before attaching uniform block
+    uBlock = UniformBlock(this->program, (char*) "UniformBlock");
 }
 
 void Application::loop() {
     glutMainLoop();
 }
 
-GLhandleARB Application::loadShaders() {
+void Application::loadShaders() {
 
     GLuint vShader, fShader;
 
@@ -91,8 +48,8 @@ GLhandleARB Application::loadShaders() {
 
     size_t size;
 
-    GLcharARB * vShaderSource;
-    GLcharARB * fShaderSource;
+    GLchar * vShaderSource;
+    GLchar * fShaderSource;
 
     size = loadSource((char *) "glsl/vertex.glsl", &vShaderSource);
 
@@ -134,7 +91,7 @@ GLhandleARB Application::loadShaders() {
         fprintf(stdout, "%s\n", logString);
     }
 
-    GLuint program = glCreateProgram();
+    program = glCreateProgram();
 
     glAttachShader(program, vShader);
     glAttachShader(program, fShader);
@@ -151,6 +108,35 @@ GLhandleARB Application::loadShaders() {
     }
 
     glUseProgram(program);
+}
 
-    return program;
+int Application::loadSource(char *filename, GLchar ** shaderSource) {
+    size_t size;
+    FILE *source = fopen(filename, "rb");
+
+    if (source == NULL) {
+        fprintf(stderr, "GLSL file not found\n");
+        exit(1);
+    }
+
+    fseek(source, 0, SEEK_END);
+    size = ftell(source);
+    rewind(source);
+
+    GLchar * string;
+
+    // allocate memory
+    string = (GLchar *) malloc(size * sizeof (GLchar));
+
+    if (string == 0) {
+        fprintf(stderr, "Error: Out of memory\n");
+        exit(1);
+    }
+
+    fread(string, size, 1, source);
+    fclose(source);
+
+    *shaderSource = string;
+
+    return size;
 }

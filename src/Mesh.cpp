@@ -26,8 +26,8 @@ Mesh::Mesh() {
 Mesh::Mesh(const Mesh& orig) {
     count = orig.count;
     // copy vertex data
-    memcpy(vertices, orig.vertices, count * sizeof(Vec3));
-    memcpy(normals, orig.normals, count * sizeof(Vec3));
+    memcpy(vertices, orig.vertices, count * sizeof(GLfloat) * 3);
+    memcpy(normals, orig.normals, count * sizeof(GLfloat) * 3);
 }
 
 Mesh::~Mesh() {
@@ -44,10 +44,7 @@ void Mesh::loadNormals() const {
     glGenBuffers(1, &normalBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
     
-    GLfloat* foo = (GLfloat*)malloc(size);
-    memcpy(foo, normals, size);
-    
-    glBufferData(GL_ARRAY_BUFFER, size, foo, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, size, normals, GL_STATIC_DRAW);
     
     fprintf(stdout, "%d bytes uploaded to GPU memory\n", size);
     

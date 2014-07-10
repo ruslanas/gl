@@ -28,9 +28,9 @@ void Scene::add(const Mesh& mesh) {
     meshes[count] = mesh;
     numVertices += mesh.numVertices();
     
-    // load vertices and normals to GPU
     mesh.loadVertices();
     mesh.loadNormals();
+    
 }
 
 void Scene::render() {

@@ -13,18 +13,23 @@
 #include <cstdlib>
 #include <GL/glew.h>
 #include "Scene.h"
+#include "UniformBlock.h"
 
 class Application {
 public:
+    UniformBlock uBlock;
+    
     Application();
     Application(const Application& orig);
     virtual ~Application();
     
     void init(Scene& scene);
-    GLhandleARB loadShaders();
+    void loadShaders();
+    int loadSource(char *filename, GLcharARB ** shaderSource);
     void loop();
     
 private:
+    GLuint program;
 };
 
 #endif	/* APPLICATION_H */

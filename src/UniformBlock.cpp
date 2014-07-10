@@ -10,6 +10,11 @@
 #include <cstdio>
 #include <iostream>
 
+UniformBlock::UniformBlock() {
+    bindingPoint = 0;
+    blockIdx = 0;
+}
+
 UniformBlock::UniformBlock(GLuint _program, char* _name) : name(_name), program(_program) {
     bindingPoint = 1;
     blockIdx = glGetUniformBlockIndex(program, name);
@@ -17,6 +22,7 @@ UniformBlock::UniformBlock(GLuint _program, char* _name) : name(_name), program(
 
 UniformBlock::UniformBlock(const UniformBlock& orig) {
     bindingPoint = orig.bindingPoint;
+    blockIdx = orig.blockIdx;
 }
 
 UniformBlock::~UniformBlock() {

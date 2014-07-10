@@ -13,6 +13,8 @@
 
 class UniformBlock {
 public:
+    // default constructor
+    UniformBlock();
     UniformBlock(GLuint _program, char* _name);
     UniformBlock(const UniformBlock& orig);
     virtual ~UniformBlock();
