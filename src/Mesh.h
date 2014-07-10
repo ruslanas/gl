@@ -8,6 +8,8 @@
 #ifndef MESH_H
 #define	MESH_H
 
+#include <GL/glut.h>
+
 #include "Vec3.h"
 
 class Mesh {
@@ -17,12 +19,17 @@ public:
     virtual ~Mesh();
     
     void addVertex(const Vec3& vertex);
+    void addVertex(const Vec3& vertex, const Vec3& normal);
     void addFace(const Vec3& v1, const Vec3& v2, const Vec3& v3);
-    void print();
     int numVertices() const;
     
+    void loadVertices() const; // do not modify object state
+    void loadNormals() const;
+    
+    
 protected:
-    Vec3* vertices;
+    GLfloat* vertices;
+    GLfloat* normals;
     int count;
     
 private:

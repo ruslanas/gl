@@ -31,7 +31,7 @@ public:
     
     // cross product
     Vec3 operator^(const Vec3& rhs);
-    Vec3 operator-(const Vec3& rhs);
+    Vec3 operator-(const Vec3& rhs) const;
     double length();
 
 private:

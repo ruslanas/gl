@@ -18,9 +18,6 @@ public:
     Box(const Box& orig);
     virtual ~Box();
 
-    void loadVertices(GLfloat* arr);
-    void loadNormals(GLfloat* arr);
-    
 private:
     double length, width, depth;
 };

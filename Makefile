@@ -1,6 +1,6 @@
 MAIN = lab
-SRC = util.cpp main.cpp Geometry.cpp Vec3.cpp Matrix4.cpp UniformBlock.cpp \
-Mesh.cpp Box.cpp Scene.cpp
+SRC = main.cpp Geometry.cpp Vec3.cpp Matrix4.cpp UniformBlock.cpp \
+Mesh.cpp Box.cpp Scene.cpp Application.cpp
 
 CC = g++
 D_BIN = dist
@@ -22,8 +22,6 @@ $(MAIN): $(OBJ)
 # existing auto generation techniques are not elegant enough
 obj/main.o: src/main.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) -c src/main.cpp -o obj/main.o
-obj/util.o: src/util.cpp
-	$(CC) $(CFLAGS) $(INCLUDES) -c src/util.cpp -o obj/util.o
 obj/Geometry.o: src/Geometry.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) -c src/Geometry.cpp -o obj/Geometry.o
 obj/Vec3.o: src/Vec3.cpp
@@ -38,6 +36,8 @@ obj/Box.o: src/Box.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) -c src/Box.cpp -o obj/Box.o
 obj/Scene.o: src/Scene.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) -c src/Scene.cpp -o obj/Scene.o
+obj/Application.o: src/Application.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) -c src/Application.cpp -o obj/Application.o
 	
 all:
 	g++ main.cpp util.cpp -g -Wall -o lab -lglut -lGL -lGLU -lGLEW

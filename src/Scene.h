@@ -20,8 +20,10 @@ public:
     void add(const Mesh& mesh);
     // quick fix
     GLuint array;
-    
+
 private:
+    int count;
+    Mesh meshes[128];
     GLsizei numVertices;
 };
 
