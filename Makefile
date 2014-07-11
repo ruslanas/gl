@@ -1,6 +1,6 @@
 MAIN = lab
-SRC = main.cpp Geometry.cpp Vec3.cpp Matrix4.cpp UniformBlock.cpp \
-Mesh.cpp Box.cpp Scene.cpp Application.cpp
+SRC = Geometry.cpp Vec3.cpp Matrix4.cpp UniformBlock.cpp \
+Mesh.cpp Box.cpp Scene.cpp Application.cpp main.cpp
 
 CC = g++
 D_BIN = dist

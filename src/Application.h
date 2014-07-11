@@ -24,12 +24,18 @@ public:
     virtual ~Application();
     
     void init(Scene& scene);
-    void loadShaders();
+    void linkProgram();
     int loadSource(char *filename, GLcharARB ** shaderSource);
     void loop();
+    void setActiveUniformBlock(char* name);
+    
+    void loadVertexShader(char* file);
+    void loadFragmentShader(char* file);
     
 private:
     GLuint program;
+    GLuint fShader;
+    GLuint vShader;
 };
 
 #endif	/* APPLICATION_H */

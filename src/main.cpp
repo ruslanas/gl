@@ -56,7 +56,23 @@ int main(int argc, char**argv) {
     rotZ.makeRotationZ(-60 * M_PI / 180);
     mat = mat * rotZ;
 
+    app.loadFragmentShader((char*)"glsl/fragment.glsl");
+    app.loadVertexShader((char*)"glsl/vertex.glsl");
+    
+    app.linkProgram();
+    
+    app.setActiveUniformBlock((char*)"UniformBlock");
+    
+    // append model transformation matrix to uniform block
     app.uBlock.append(mat);
+    // append light direction vector to uniform block
+    Vec3 light = Vec3(0, 0.5, 1);
+    app.uBlock.append(light);
+    
+    Vec3 red = Vec3(1, 1, 0);
+    app.uBlock.append(red);
+    
+    app.uBlock.transfere(); // copy to GPU memory
     
     Box box = Box(0.5, 1.0, 2.0);
     scene.add(box);

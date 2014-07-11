@@ -29,60 +29,29 @@ void Application::init(Scene& scene) {
 
     scene.array = arr;
 
-    loadShaders();
-    
-    // shaders must be loaded and compiled before attaching uniform block
-    uBlock = UniformBlock(this->program, (char*) "UniformBlock");
+}
+
+void Application::setActiveUniformBlock(char* name) {
+    uBlock = UniformBlock(this->program, (char*) name);
 }
 
 void Application::loop() {
     glutMainLoop();
 }
 
-void Application::loadShaders() {
-
-    GLuint vShader, fShader;
-
-    vShader = glCreateShader(GL_VERTEX_SHADER);
+void Application::loadFragmentShader(char* file) {
     fShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-    size_t size;
-
-    GLchar * vShaderSource;
     GLchar * fShaderSource;
-
-    size = loadSource((char *) "glsl/vertex.glsl", &vShaderSource);
-
-    glShaderSource(vShader, 1, (const GLcharARB**) &vShaderSource, (GLint *) & size);
-
-    // Compile
-    glCompileShader(vShader);
-
-    int compiled = 0, length = 0, laux = 0;
-    glGetObjectParameterivARB(vShader, GL_COMPILE_STATUS, &compiled);
-    glGetObjectParameterivARB(vShader, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
-
-    if (compiled != GL_TRUE) {
-        fprintf(stderr, "Failed to compile vertex shader\n");
-    }
-
-    if (length > 0) {
-        char *logString = (GLchar *) malloc(length * sizeof (GLchar));
-        glGetInfoLogARB(vShader, length, &laux, logString);
-        std::cout << logString << std::endl;
-    }
-
-    size = loadSource((char *) "glsl/fragment.glsl", &fShaderSource);
-
-    glShaderSourceARB(fShader, 1, (const GLcharARB**) &fShaderSource, (GLint *) & size);
-    glCompileShaderARB(fShader);
+    size_t size = loadSource(file, &fShaderSource);
     
-    length = 0;
+    glShaderSource(fShader, 1, (const GLcharARB**) &fShaderSource, (GLint *) & size);
+    glCompileShader(fShader);
+    int length = 0, compiled = 0, laux = 0;
     glGetObjectParameterivARB(fShader, GL_COMPILE_STATUS, &compiled);
     glGetObjectParameterivARB(fShader, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
 
     if (compiled != GL_TRUE) {
-        fprintf(stderr, "Failed to compile fragment shader\n");
+        fprintf(stderr, "Failed to compile shader %s\n", file);
     }
 
     if (length > 0) {
@@ -91,6 +60,32 @@ void Application::loadShaders() {
         fprintf(stdout, "%s\n", logString);
     }
 
+}
+
+void Application::loadVertexShader(char* file) {
+    vShader = glCreateShader(GL_VERTEX_SHADER);
+    GLchar * vShaderSource;
+    size_t size = loadSource(file, &vShaderSource);
+    
+    glShaderSource(vShader, 1, (const GLcharARB**) &vShaderSource, (GLint *) & size);
+    glCompileShader(vShader);
+    int length = 0, compiled = 0, laux = 0;
+    glGetObjectParameterivARB(vShader, GL_COMPILE_STATUS, &compiled);
+    glGetObjectParameterivARB(vShader, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
+
+    if (compiled != GL_TRUE) {
+        fprintf(stderr, "Failed to compile shader %s\n", file);
+    }
+
+    if (length > 0) {
+        char *logString = (GLchar *) malloc(length * sizeof (GLcharARB));
+        glGetInfoLogARB(vShader, length, &laux, logString);
+        fprintf(stdout, "%s\n", logString);
+    }
+
+}
+
+void Application::linkProgram() {
     program = glCreateProgram();
 
     glAttachShader(program, vShader);
@@ -98,7 +93,8 @@ void Application::loadShaders() {
 
     glLinkProgram(program);
 
-    glGetObjectParameterivARB(program, GL_OBJECT_LINK_STATUS_ARB, &compiled);
+    int length = 0, linked = 0, laux = 0;
+    glGetObjectParameterivARB(program, GL_OBJECT_LINK_STATUS_ARB, &linked);
     glGetObjectParameterivARB(program, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
 
     if (length > 0) {
