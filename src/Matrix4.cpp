@@ -40,6 +40,13 @@ void Matrix4::init(double _initial) {
     }
 }
 
+void Matrix4::makeRotationX(double angle) {
+    this->mat[1][1] = cos(angle);
+    this->mat[1][2] = -sin(angle);
+    this->mat[2][1] = sin(angle);
+    this->mat[2][2] = cos(angle);
+}
+
 void Matrix4::makeRotationY(double angle) {
     this->mat[0][0] = cos(angle);
     this->mat[0][2] = -sin(angle);

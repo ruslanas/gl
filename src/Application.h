@@ -36,6 +36,7 @@ private:
     GLuint program;
     GLuint fShader;
     GLuint vShader;
+    Scene mScene;
 };
 
 #endif	/* APPLICATION_H */

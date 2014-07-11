@@ -10,6 +10,8 @@
 
 #include "Box.h"
 
+#define MAX_VERTEX_ARRAYS 10
+
 class Scene {
 public:
     Scene();
@@ -25,6 +27,8 @@ private:
     int count;
     Mesh meshes[128];
     GLsizei numVertices;
+    GLuint vertexArrays[MAX_VERTEX_ARRAYS];
+    int end_ptr;
 };
 
 #endif	/* SCENE_H */

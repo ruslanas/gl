@@ -13,7 +13,7 @@
 
 UniformBlock::UniformBlock() {
     end_ptr = 0;
-    bindingPoint = 0;
+    bindingPoint = 1;
     blockIdx = 0;
 }
 
@@ -24,6 +24,8 @@ UniformBlock::UniformBlock(GLuint _program, char* _name)
     blockIdx = glGetUniformBlockIndex(program, name);
     glGetActiveUniformBlockiv(program, blockIdx, GL_UNIFORM_BLOCK_DATA_SIZE, &blockSize);
 
+    fprintf(stdout, "Block size: %d\n", blockSize);
+    
     buff = malloc(blockSize);
     if (buff == NULL) {
         fprintf(stderr, "Unable to allocate buffer");
@@ -49,19 +51,34 @@ UniformBlock::~UniformBlock() {
 
 void UniformBlock::append(Vec3& vec) {
     GLfloat data[3] = {(GLfloat)vec.x, (GLfloat)vec.y, (GLfloat)vec.z};
-    memcpy((char*)buff + end_ptr, data, sizeof(data));
-    end_ptr += sizeof(data);
+    size_t size = sizeof(data);
+    memcpy((char*)buff + end_ptr, data, size);
+    end_ptr += size;
+    fprintf(stdout, "End pointer: %d\n", end_ptr);
 }
 
 void UniformBlock::append(Matrix4& mat) {
     GLfloat data[16];
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            data[i * 4 + j] = mat(i, j);
+            data[i * 4 + j] = (GLfloat)mat(i, j);
         }
     }
     memcpy((char*)buff + end_ptr, data, sizeof(data));
     end_ptr += sizeof(data);
+    fprintf(stdout, "End pointer: %d\n", end_ptr);
+}
+
+void UniformBlock::append(Matrix4 mat) {
+    GLfloat data[16];
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            data[i * 4 + j] = (GLfloat)mat(i, j);
+        }
+    }
+    memcpy((char*)buff + end_ptr, data, sizeof(data));
+    end_ptr += sizeof(data);
+    fprintf(stdout, "End pointer: %d\n", end_ptr);
 }
 
 void UniformBlock::transfere() {

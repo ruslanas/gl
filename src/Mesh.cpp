@@ -9,7 +9,7 @@
 #include "Mesh.h"
 #include <iostream>
 
-#define MAX_VERTICES 64
+#define MAX_VERTICES 32
 #define BUFFER_OFFSET(offset) ((void *)(offset))
 
 Mesh::Mesh() {
@@ -95,7 +95,7 @@ void Mesh::addVertex(const Vec3& vertex, const Vec3& normal) {
 
 void Mesh::addFace(const Vec3& v1, const Vec3& v2, const Vec3& v3) {
     // cross product
-    Vec3 normal = (v1 - v2) ^ (v1 - v3);
+    Vec3 normal = (v1 - v2) ^ (v2 - v3);
     
     addVertex(v1, normal);
     addVertex(v2, normal);

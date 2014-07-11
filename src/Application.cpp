@@ -17,18 +17,27 @@ Application::~Application() {
 }
 
 void Application::init(Scene& scene) {
+    glutInitWindowPosition(100, 100);
+    glutInitWindowSize(640, 480);
+    glutCreateWindow("OpenGL Application");
 
-    // allocate vertex array object names
-    GLuint arr;
-    glGenVertexArrays(1, &arr);
+    GLenum err = glewInit();
+    if (err != GLEW_OK) {
+        fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
+        exit(EXIT_FAILURE);
+    }
 
-    // activate previously created vertex-array
-    glBindVertexArray(arr);
+    fprintf(stdout, "GLEW version: %s\n", glewGetString(GLEW_VERSION));
 
-    fprintf(stdout, "Vertex array bound: %d\n", arr);
+    if (!GLEW_ARB_shader_objects || !GLEW_ARB_fragment_shader
+            || !GLEW_ARB_vertex_shader || !GLEW_ARB_shading_language_100) {
+        fprintf(stderr, "Unsupported extensions\n");
+        exit(EXIT_FAILURE);
+    }
 
-    scene.array = arr;
+    fprintf(stdout, "GL version: %s\n", glGetString(GL_VERSION));
 
+    mScene = scene;
 }
 
 void Application::setActiveUniformBlock(char* name) {
@@ -43,7 +52,7 @@ void Application::loadFragmentShader(char* file) {
     fShader = glCreateShader(GL_FRAGMENT_SHADER);
     GLchar * fShaderSource;
     size_t size = loadSource(file, &fShaderSource);
-    
+
     glShaderSource(fShader, 1, (const GLcharARB**) &fShaderSource, (GLint *) & size);
     glCompileShader(fShader);
     int length = 0, compiled = 0, laux = 0;
@@ -66,7 +75,7 @@ void Application::loadVertexShader(char* file) {
     vShader = glCreateShader(GL_VERTEX_SHADER);
     GLchar * vShaderSource;
     size_t size = loadSource(file, &vShaderSource);
-    
+
     glShaderSource(vShader, 1, (const GLcharARB**) &vShaderSource, (GLint *) & size);
     glCompileShader(vShader);
     int length = 0, compiled = 0, laux = 0;
@@ -112,7 +121,7 @@ int Application::loadSource(char *filename, GLchar ** shaderSource) {
 
     if (source == NULL) {
         fprintf(stderr, "GLSL file not found\n");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     fseek(source, 0, SEEK_END);
@@ -126,7 +135,7 @@ int Application::loadSource(char *filename, GLchar ** shaderSource) {
 
     if (string == 0) {
         fprintf(stderr, "Error: Out of memory\n");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     fread(string, size, 1, source);

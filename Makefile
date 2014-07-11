@@ -1,5 +1,5 @@
 MAIN = lab
-SRC = Geometry.cpp Vec3.cpp Matrix4.cpp UniformBlock.cpp \
+SRC = Vec3.cpp Matrix4.cpp UniformBlock.cpp \
 Mesh.cpp Box.cpp Scene.cpp Application.cpp main.cpp
 
 CC = g++
@@ -22,8 +22,6 @@ $(MAIN): $(OBJ)
 # existing auto generation techniques are not elegant enough
 obj/main.o: src/main.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) -c src/main.cpp -o obj/main.o
-obj/Geometry.o: src/Geometry.cpp
-	$(CC) $(CFLAGS) $(INCLUDES) -c src/Geometry.cpp -o obj/Geometry.o
 obj/Vec3.o: src/Vec3.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) -c src/Vec3.cpp -o obj/Vec3.o
 obj/Matrix4.o: src/Matrix4.cpp

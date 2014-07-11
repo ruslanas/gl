@@ -17,6 +17,8 @@ public:
     virtual ~Matrix4();
     
     void init(double _initial);
+    
+    void makeRotationX(double angle);
     void makeRotationY(double angle);
     void makeRotationZ(double angle);
     

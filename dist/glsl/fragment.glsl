@@ -1,8 +1,5 @@
 #version 420 core
-
-layout(std140) uniform uBlock {
-    vec3 uVec;
-};
+#pragma debug(on)
 
 layout(std140) uniform UniformBlock {
     mat4 Model;
@@ -17,6 +14,6 @@ out vec4 outColor;
 
 void main(void){
     // hardcoded light
-    float diffuse = clamp(abs(dot(normalize(light), normalize(vNormal.xyz))), 0.0, 1.0);
-    outColor = vec4(color, 1.0) * diffuse;
+    float diffuse = clamp(abs(dot(normalize(vNormal.xyz), normalize(light))), 0.0, 1.0);
+    outColor = vec4(color * diffuse, 1.0);
 }

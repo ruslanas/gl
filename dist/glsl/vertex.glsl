@@ -15,5 +15,5 @@ varying vec4 vPosition;
 void main(void){
     vNormal = normal;
     gl_Position = Model * position;
-    vPosition = position;
+    vPosition = gl_Position;
 }

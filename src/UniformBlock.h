@@ -22,6 +22,7 @@ public:
     
     void append(Vec3& vec);
     void append(Matrix4& mat);
+    void append(Matrix4 mat);
     void transfere();
     
 private:
