@@ -24,12 +24,13 @@ public:
     void append(Matrix4& mat);
     void append(Matrix4 mat);
     void transfere();
+    void createBuffer();
+    void writeBuffer(GLfloat* data, size_t size);
     
 private:
     char* name;
     GLint blockSize;
     GLuint program, blockIdx, bindingPoint, buffName;
-    GLvoid* buff;
     int end_ptr;
 };
 

@@ -12,8 +12,6 @@
 #include "Box.h"
 #include "Scene.h"
 
-#define BUFFER_OFFSET(offset) ((void *)(offset))
-
 Scene scene;
 
 void display() {
@@ -43,18 +41,23 @@ int main(int argc, char**argv) {
     // append model transformation matrix to uniform block
     app.uBlock.append(mat * mat2 * mat3);
     // append light direction vector to uniform block
+
     Vec3 light = Vec3(0, 0.5, 1);
     app.uBlock.append(light);
 
-    Vec3 red = Vec3(0, 0, 1);
-    app.uBlock.append(red);
+    Vec3 blue = Vec3(0, 0, 1);
+    app.uBlock.append(blue);
+    
     app.uBlock.transfere();
-
+    
     Box box = Box(0.5, 0.5, 0.5);
     box.applyMatrix(mat * mat2 * mat3);
     
     scene.add(box);
-    scene.add(Box(-0.5, -0.5, -0.5));
+    Box box2 = Box(-0.5, -0.5, -0.5);
+    box2.applyMatrix(mat2);
+    scene.add(box2);
+    scene.add(Box(-0.25, 1, 0.25));
 
     glutDisplayFunc(display);
 

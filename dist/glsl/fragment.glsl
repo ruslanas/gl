@@ -3,8 +3,8 @@
 
 layout(std140) uniform UniformBlock {
     mat4 Model;
-    vec3 light;
-    vec3 color;
+    vec4 light;
+    vec4 color;
 };
 
 varying vec4 vNormal;
@@ -14,6 +14,6 @@ out vec4 outColor;
 
 void main(void){
     // hardcoded light
-    float diffuse = clamp(abs(dot(normalize(vNormal.xyz), normalize(light))), 0.0, 1.0);
-    outColor = vec4(color * diffuse, 1.0);
+    float diffuse = clamp(abs(dot(normalize(vNormal), normalize(light))), 0.0, 1.0);
+    outColor = vPosition * diffuse;
 }

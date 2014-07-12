@@ -5,7 +5,6 @@
  * Created on 09 July 2014, 22:41
  */
 
-#include <GL/glew.h>
 #include "Mesh.h"
 #include <iostream>
 
@@ -35,58 +34,53 @@ void Mesh::applyMatrix(const Matrix4& mat) {
 // load normals into GPU vertex array
 void Mesh::loadNormals() const {
 
-    size_t size = sizeof(GLfloat) * count * 3;
+    size_t size = sizeof(GLfloat) * count * 4;
     GLfloat* normals = (GLfloat*)malloc(size);
     for(int i=0;i<count;i++) {
-        normals[i * 3] = normalArray[i].x;
-        normals[i * 3 + 1] = normalArray[i].y;
-        normals[i * 3 + 2] = normalArray[i].z;
+        normals[i * 4] = normalArray[i].x;
+        normals[i * 4 + 1] = normalArray[i].y;
+        normals[i * 4 + 2] = normalArray[i].z;
+        normals[i * 4 + 3] = 1;
     }
     
-    std::cout << "Loading normals..." << std::endl;
-    
-    GLuint normalBuffer;
-    glGenBuffers(1, &normalBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+    GLuint buffer;
+    glGenBuffers(1, &buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
     
     glBufferData(GL_ARRAY_BUFFER, size, normals, GL_STATIC_DRAW);
     
-    fprintf(stdout, "%d bytes uploaded to GPU memory\n", size);
+    fprintf(stdout, "%d bytes uploaded to buffer %d\n", size, buffer);
     
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
     
 }
 
 // load vertex data into GPU vertex array
 void Mesh::loadVertices() const {
     
-    size_t size = sizeof(GLfloat) * count * 3;
+    size_t size = sizeof(GLfloat) * count * 4;
     GLfloat* vertices = (GLfloat*)malloc(size);
     
     for(int i=0;i<count;i++) {
-        vertices[i * 3] = vertexArray[i].x;
-        vertices[i * 3 + 1] = vertexArray[i].y;
-        vertices[i * 3 + 2] = vertexArray[i].z;
+        vertices[i * 4] = vertexArray[i].x;
+        vertices[i * 4 + 1] = vertexArray[i].y;
+        vertices[i * 4 + 2] = vertexArray[i].z;
+        vertices[i * 4 + 3] = 1;
     }
-    
-    std::cout << "Loading vertices..." << std::endl;
-    
     
     GLuint buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     
-    fprintf(stdout, "Buffer bound: %d\n", buffer);
-
     // allocate OpenGL server memory for storing data
     glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
     
-    fprintf(stdout, "%d bytes uploaded to GPU memory\n", size);
+    fprintf(stdout, "%d bytes uploaded to buffer %d\n", size, buffer);
     
     // tell how to interpret data
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 
 }
 

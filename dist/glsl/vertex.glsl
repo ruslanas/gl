@@ -5,8 +5,8 @@ layout(location=1) in vec4 normal;
 
 layout(std140) uniform UniformBlock {
     mat4 Model;
-    vec3 light;
-    vec3 color;
+    vec4 light;
+    vec4 color;
 };
 
 varying vec4 vNormal;

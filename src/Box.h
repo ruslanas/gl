@@ -8,7 +8,6 @@
 #ifndef BOX_H
 #define	BOX_H
 
-#include <GL/glut.h>
 #include "Vec3.h"
 #include "Mesh.h"
 
