@@ -9,37 +9,42 @@
 #include "Mesh.h"
 #include <iostream>
 
-#define MAX_VERTICES 32
-#define BUFFER_OFFSET(offset) ((void *)(offset))
-
 Mesh::Mesh() {
-    
     count = 0; // number of vertices
     
-    // allocate memory for vertex and normal coordinates
-    // arrays better idea for this matter
-    vertices = (GLfloat*)malloc(MAX_VERTICES * sizeof(GLfloat) * 3);
-    normals = (GLfloat*)malloc(MAX_VERTICES * sizeof(GLfloat) * 3);
 }
 
 // copy constructor
 Mesh::Mesh(const Mesh& orig) {
     count = orig.count;
+    size_t size = count * sizeof(GLfloat) * 3;
     // copy vertex data
-    memcpy(vertices, orig.vertices, count * sizeof(GLfloat) * 3);
-    memcpy(normals, orig.normals, count * sizeof(GLfloat) * 3);
+    memcpy(vertexArray, orig.vertexArray, size);
+    memcpy(normalArray, orig.normalArray, size);
 }
 
 Mesh::~Mesh() {
 }
 
+void Mesh::applyMatrix(const Matrix4& mat) {
+    for(int i=0;i<count;i++) {
+        vertexArray[i] = vertexArray[i].applyMatrix(mat);
+    }
+}
+
 // load normals into GPU vertex array
 void Mesh::loadNormals() const {
 
+    size_t size = sizeof(GLfloat) * count * 3;
+    GLfloat* normals = (GLfloat*)malloc(size);
+    for(int i=0;i<count;i++) {
+        normals[i * 3] = normalArray[i].x;
+        normals[i * 3 + 1] = normalArray[i].y;
+        normals[i * 3 + 2] = normalArray[i].z;
+    }
+    
     std::cout << "Loading normals..." << std::endl;
     
-    size_t size = sizeof(GLfloat) * numVertices() * 3;
-
     GLuint normalBuffer;
     glGenBuffers(1, &normalBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
@@ -56,9 +61,17 @@ void Mesh::loadNormals() const {
 // load vertex data into GPU vertex array
 void Mesh::loadVertices() const {
     
+    size_t size = sizeof(GLfloat) * count * 3;
+    GLfloat* vertices = (GLfloat*)malloc(size);
+    
+    for(int i=0;i<count;i++) {
+        vertices[i * 3] = vertexArray[i].x;
+        vertices[i * 3 + 1] = vertexArray[i].y;
+        vertices[i * 3 + 2] = vertexArray[i].z;
+    }
+    
     std::cout << "Loading vertices..." << std::endl;
     
-    size_t size = sizeof(GLfloat) * count * 3;
     
     GLuint buffer;
     glGenBuffers(1, &buffer);
@@ -77,19 +90,14 @@ void Mesh::loadVertices() const {
 
 }
 
-void Mesh::addVertex(const Vec3& vertex) {
-    vertices[count * 3] = vertex.x;
-    vertices[count * 3 + 1] = vertex.y;
-    vertices[count * 3 + 2] = vertex.z;
+void Mesh::addVertex(const Vec3 vertex) {
     
+    vertexArray[count] = vertex;
     count++;
 }
 
-void Mesh::addVertex(const Vec3& vertex, const Vec3& normal) {
-    normals[count * 3] = normal.x;
-    normals[count * 3 + 1] = normal.y;
-    normals[count * 3 + 2] = normal.z;
-    
+void Mesh::addVertex(const Vec3 vertex, const Vec3 normal) {
+    normalArray[count] = normal;
     addVertex(vertex);
 }
 

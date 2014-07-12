@@ -47,8 +47,6 @@ void Scene::add(const Mesh& mesh) {
 
 void Scene::render() {
     
-    std::cout << "Rendering scene..." << std::endl;
-    
     glClearColor(0.5, 0.5, 0.5, 1);
     glClear(GL_COLOR_BUFFER_BIT);
     
@@ -59,8 +57,6 @@ void Scene::render() {
     for(int i=0;i<end_ptr;i++) {
         // select array for use as vertex data
         glBindVertexArray(vertexArrays[i]);
-
-        fprintf(stdout, "Vertex array bound: %d\n", vertexArrays[i]);
 
         // send vertex data to OpenGL pipeline.
         // take NumVertices, start from 0th element in vertex array

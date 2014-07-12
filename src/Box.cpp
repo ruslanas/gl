@@ -48,7 +48,6 @@ Box::Box(const Box& orig) : Mesh() {
     length = orig.length;
     depth = orig.depth;
     count = orig.count;
-    memcpy(vertices, orig.vertices, count * sizeof(Vec3));
 }
 
 Box::~Box() {

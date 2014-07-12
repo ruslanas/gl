@@ -21,6 +21,7 @@ public:
     double y;
     double z;
 
+    Vec3();
     Vec3(double _x, double _y, double _z);
     Vec3(const Vec3& orig);
     virtual ~Vec3();

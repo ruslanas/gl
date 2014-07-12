@@ -48,12 +48,13 @@ int main(int argc, char**argv) {
 
     Vec3 red = Vec3(0, 0, 1);
     app.uBlock.append(red);
-    // copy data to GPU memory
     app.uBlock.transfere();
 
-    scene.add(Box(0.5, 0.5, 0.5));
+    Box box = Box(0.5, 0.5, 0.5);
+    box.applyMatrix(mat * mat2 * mat3);
+    
+    scene.add(box);
     scene.add(Box(-0.5, -0.5, -0.5));
-    scene.add(Box(-0.25, 0.25, 0.25));
 
     glutDisplayFunc(display);
 
