@@ -1,7 +1,13 @@
-OpenGL Application framework
+OpenGL Application Framework
 ============================
 
 Warning: code is experimental in early stage of development.
+
+```{bash}
+git clone https://github.com/ruslanas/gl.git
+cd gl
+make win
+```
 
 NOTES
 -----
