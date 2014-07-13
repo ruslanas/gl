@@ -1,5 +1,10 @@
+OpenGL Application framework
+============================
+
+Warning: code is experimental in early stage of development.
+
 NOTES
-=====
+-----
 
 [Download GLEW](http://glew.sourceforge.net/index.html)
 
